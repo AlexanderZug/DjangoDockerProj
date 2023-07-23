@@ -2,12 +2,11 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 
-
 load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.environ.get("SECRET_KEY")
+SECRET_KEY = "dcw"
 
 DEBUG = True
 
@@ -107,3 +106,5 @@ LOGGING = {
         },
     },
 }
+
+CELERY_BROKER_URL = 'redis://redis:6379/0'

@@ -1,4 +1,4 @@
-from django.db.models import Prefetch
+from django.db.models import Prefetch, F
 from rest_framework.viewsets import ReadOnlyModelViewSet
 
 from client.models import Client
@@ -15,5 +15,5 @@ class SubscriptionView(ReadOnlyModelViewSet):
             .select_related("user")
             .only("company_name", "user__email"),
         ),
-    )
+    ).annotate(price=F("service__price") - F("service__price") * (F("plan__discount_percent") / 100.00))
     serializer_class = SubscriptionSerializer

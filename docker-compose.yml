@@ -22,3 +22,37 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=postgres
+
+  redis:
+    image: redis:6.2.6-alpine
+    hostname: redis
+
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    hostname: worker
+    entrypoint: celery
+    command: -A celery_app.app worker -l info
+    volumes:
+        - ./app:/app
+    links:
+      - redis
+    depends_on:
+      - redis
+
+  flower:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    hostname: flower
+    entrypoint: celery
+    command: -A celery_app.app flower
+    volumes:
+        - ./app:/app
+    links:
+      - redis
+    ports:
+      - "5555:5555"
+    depends_on:
+      - redis
