@@ -34,12 +34,17 @@ services:
     hostname: worker
     entrypoint: celery
     command: -A celery_app.app worker -l info
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
     volumes:
         - ./app:/app
     links:
       - redis
     depends_on:
       - redis
+      - db
 
   flower:
     build:
