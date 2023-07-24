@@ -61,3 +61,25 @@ services:
       - "5555:5555"
     depends_on:
       - redis
+
+  debug:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '8011-8020:8011-8020'
+    volumes:
+        - ./app:/app
+    environment:
+      - DB_HOST=db
+      - DB_NAME=postgres
+      - DB_USER=postgres
+      - DB_PASS=postgres
+    command: >
+      sh -c "python manage.py runserver 0.0.0.0:8000"
+    depends_on:
+        - web
+        - db
+        - redis
+        - worker
+        - flower

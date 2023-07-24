@@ -6,6 +6,11 @@ import sys
 
 def main():
     """Run administrative tasks."""
+
+    if os.environ.get('DEBUG', 'False').lower() == 'true':
+        import pydevd_pycharm
+        pydevd_pycharm.settrace('0.0.0.0', port=5678, stdoutToServer=True, stderrToServer=True)
+
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'dockerapp.settings')
     try:
         from django.core.management import execute_from_command_line
