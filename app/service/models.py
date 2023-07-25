@@ -2,8 +2,11 @@ from __future__ import annotations
 
 from typing import Union
 
+from django.core.cache import cache
 from django.db import models
 from django.db.models import Manager
+from django.db.models.signals import post_delete
+from django.dispatch import receiver
 
 from client.models import Client
 
@@ -68,9 +71,22 @@ class Subscription(models.Model):
         verbose_name="План",
     )
 
+    def save(self, *args, **kwargs):
+        creating = not bool(self.id)
+        result = super().save(*args, **kwargs)
+        if creating:
+            pass
+            #TODO: add celery task
+        return result
+
     def __str__(self):
         return f"{self.client} - {self.service} - {self.plan}"
 
     class Meta:
         verbose_name = "Подписка"
         verbose_name_plural = "Подписки"
+
+
+@receiver(post_delete, sender=Subscription)
+def delete_cache_total_sum(sender, instance, **kwargs):
+    cache.delete("price_cache")
