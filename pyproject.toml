@@ -15,6 +15,7 @@ redis = "^4.6.0"
 flower = "^2.0.0"
 ptvsd = "^4.3.2"
 pydevd-pycharm = "~=231.9225.15"
+django-cachalot = "^2.6.1"
 
 [tool.poetry.dev-dependencies]
 

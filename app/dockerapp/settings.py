@@ -20,7 +20,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
+    'cachalot',
     # My apps
     'client.apps.ClientConfig',
     'service.apps.ServiceConfig',
@@ -113,9 +113,6 @@ CELERY_BROKER_URL = 'redis://redis:6379/0'
 CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.redis.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379",
-        "OPTIONS": {
-            "db": "1",
-        },
+        "LOCATION": "redis://127.0.0.1:6379/1",
     }
 }
